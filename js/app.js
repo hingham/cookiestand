@@ -4,6 +4,7 @@ var timeArray = ['6am', '7am', '8am', '9am', '10am',
   '11am', '12pm', '1pm', '2pm', '3pm', 
   '4pm', '5pm', '6pm', '7pm', '8pm'];
 
+  
 var FirstnPike = {
   min: 23,
   max: 65,
@@ -20,7 +21,6 @@ var FirstnPike = {
   cookiesArray: [],
   cookiesByHour: function(){
     console.log(this.customerArray[1]);
-
     for(var i=0; i<timeArray.length; i++){
       var mult = Math.floor(this.customerArray[i] * this.avgSale);
       this.cookiesArray.push(mult);
@@ -37,6 +37,17 @@ var FirstnPike = {
     }
     return this.saleArray;
   },
+
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    this.saleArray.push('Total: ' + this.total);
+    console.log('total: ' + this.total);
+
+    console.log(this.saleArray);
+  }
 
 };
 
@@ -79,6 +90,17 @@ var SeaTac = {
       this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
     }
     return this.saleArray;
+  },
+
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    this.saleArray.push('Total: ' + this.total);
+    console.log('total: ' + this.total);
+
+    console.log(this.saleArray);
   }
 };
 
@@ -115,21 +137,141 @@ var seattleCenter = {
       this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
     }
     return this.saleArray;
+  },
+
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    this.saleArray.push('Total: ' + this.total);
+    console.log('total: ' + this.total);
+
+    console.log(this.saleArray);
   }
 };
 
+var capHill = {
+  min: 20,
+  max: 38,
+  avgSale: 2.3,
+
+  customerArray: [],
+  customerByHour: function (){
+    for (var i =0; i<timeArray.length; i++){
+      this.customerArray.push(numCustomers(this.min, this.max));
+      console.log(typeof(this.customerArray[1]) );
+    }
+    return this.customerArray;
+  },
+
+  cookiesArray: [],
+  cookiesByHour: function(){
+    console.log(this.customerArray[1]);
+
+    for(var i=0; i<timeArray.length; i++){
+      var mult = Math.floor(this.customerArray[i] * this.avgSale);
+      this.cookiesArray.push(mult);
+    }
+    return this.cookiesArray;
+  },
+
+  saleArray: [],
+  salesByHour: function (){
+    console.log(timeArray[1]);
+    console.log(this.cookiesArray[1]);
+    for(var i = 0; i<timeArray.length; i++){
+      this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
+    }
+    return this.saleArray;
+  },
+
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    this.saleArray.push('Total: ' + this.total);
+    console.log('total: ' + this.total);
+
+    console.log(this.saleArray);
+  }
+};
+
+var alki = {
+  min: 2,
+  max: 16,
+  avgSale: 4.6,
+
+  customerArray: [],
+  customerByHour: function (){
+    for (var i =0; i<timeArray.length; i++){
+      this.customerArray.push(numCustomers(this.min, this.max));
+      console.log(typeof(this.customerArray[1]) );
+    }
+    return this.customerArray;
+  },
+
+  cookiesArray: [],
+  cookiesByHour: function(){
+    console.log(this.customerArray[1]);
+
+    for(var i=0; i<timeArray.length; i++){
+      var mult = Math.floor(this.customerArray[i] * this.avgSale);
+      this.cookiesArray.push(mult);
+    }
+    return this.cookiesArray;
+  },
+
+  saleArray: [],
+  salesByHour: function (){
+    console.log(timeArray[1]);
+    console.log(this.cookiesArray[1]);
+    for(var i = 0; i<timeArray.length; i++){
+      this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
+    }
+    return this.saleArray;
+  },
+
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    this.saleArray.push('Total: ' + this.total);
+    console.log('total: ' + this.total);
+    console.log(this.saleArray);
+  }
+};
 
 
 console.log(FirstnPike.customerByHour() );
 console.log(FirstnPike.cookiesByHour() );
 console.log(FirstnPike.salesByHour() );
+FirstnPike.totalSales();
 
+console.log(SeaTac.customerByHour());
+console.log(SeaTac.cookiesByHour());
 console.log(SeaTac.salesByHour() );
+SeaTac.totalSales();
 
-console.log(seattleCenter.salesByHour() );
+console.log(seattleCenter.customerByHour());
+console.log(seattleCenter.cookiesByHour() );
+console.log(seattleCenter.salesByHour());
+seattleCenter.totalSales();
+
+console.log(capHill.customerByHour());
+console.log(capHill.cookiesByHour() );
+console.log(capHill.salesByHour());
+capHill.totalSales();
+
+console.log(alki.customerByHour());
+console.log(alki.cookiesByHour() );
+console.log(alki.salesByHour());
+alki.totalSales();
 
 
-for(var i = 0; i<timeArray.length; i++){
+for(var i = 0; i<=timeArray.length; i++){
   var newLi = document.createElement('li');
   var saleItem = document.createTextNode(FirstnPike.saleArray[i]);
   newLi.appendChild(saleItem);
@@ -137,7 +279,7 @@ for(var i = 0; i<timeArray.length; i++){
   position.appendChild(newLi);
 }
 
-for(i = 0; i<timeArray.length; i++){
+for(i = 0; i<=timeArray.length; i++){
   newLi = document.createElement('li');
   saleItem = document.createTextNode(SeaTac.saleArray[i]);
   newLi.appendChild(saleItem);
@@ -145,21 +287,31 @@ for(i = 0; i<timeArray.length; i++){
   position.appendChild(newLi);
 }
 
-for(i = 0; i<timeArray.length; i++){
+for(i = 0; i<=timeArray.length; i++){
   newLi = document.createElement('li');
   saleItem = document.createTextNode(seattleCenter.saleArray[i]);
   newLi.appendChild(saleItem);
-  position = document.getElementById('seattleCenter');
+  position = document.getElementById('Seattle-Center');
   position.appendChild(newLi);
 }
 
-for(i = 0; i<timeArray.length; i++){
+for(i = 0; i<=timeArray.length; i++){
   newLi = document.createElement('li');
-  saleItem = document.createTextNode(seattleCenter.saleArray[i]);
+  saleItem = document.createTextNode(capHill.saleArray[i]);
   newLi.appendChild(saleItem);
-  position = document.getElementById('seattleCenter');
+  position = document.getElementById('capitol-hill');
   position.appendChild(newLi);
 }
+
+for(i = 0; i<=timeArray.length; i++){
+  newLi = document.createElement('li');
+  saleItem = document.createTextNode(alki.saleArray[i]);
+  newLi.appendChild(saleItem);
+  position = document.getElementById('alki');
+  position.appendChild(newLi);
+}
+
+
 
 
 
