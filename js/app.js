@@ -1,15 +1,16 @@
 'strict';
 
-var timeArray = ['6am', '7am', '8am', '9am', '10am', 
-  '11am', '12pm', '1pm', '2pm', '3pm', 
+var timeArray = ['6am', '7am', '8am', '9am', '10am',
+  '11am', '12pm', '1pm', '2pm', '3pm',
   '4pm', '5pm', '6pm', '7pm', '8pm'];
 
-  
+
 var FirstnPike = {
   min: 23,
   max: 65,
   avgSale: 6.3,
   customerArray: [],
+  //generates array for random num of customers per hour
   customerByHour: function (){
     for (var i = 0; i<timeArray.length; i++){
       this.customerArray.push(numCustomers(this.min, this.max));
@@ -18,6 +19,7 @@ var FirstnPike = {
     return this.customerArray;
   },
 
+  //generates random number of sales per hour using the numbers from customerArray and 6.3
   cookiesArray: [],
   cookiesByHour: function(){
     console.log(this.customerArray[1]);
@@ -28,6 +30,17 @@ var FirstnPike = {
     return this.cookiesArray;
   },
 
+  //calculates the total
+  total: 0,
+  totalSales:function(){
+    for(var i = 0; i<timeArray.length; i++){
+      this.total = this.total + this.cookiesArray[i];
+    }
+    //console.log('total: ' + this.total);
+    return this.total;
+  },
+
+  //creates a string that can put put on the string
   saleArray: [],
   salesByHour: function (){
     console.log(timeArray[1]);
@@ -35,22 +48,45 @@ var FirstnPike = {
     for(var i = 0; i<timeArray.length; i++){
       this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
     }
+    this.saleArray.push('Total: ' + this.total);
     return this.saleArray;
   },
 
-  total: 0,
-  totalSales:function(){
-    for(var i = 0; i<timeArray.length; i++){
-      this.total = this.total + this.cookiesArray[i];
+  display: function(){
+    for(var i = 0; i<=timeArray.length; i++){
+      var newLi = document.createElement('li');
+      var saleItem = document.createTextNode(FirstnPike.saleArray[i]);
+      newLi.appendChild(saleItem);
+      var position =document.getElementById('first-pike');
+      position.appendChild(newLi);
     }
-    this.saleArray.push('Total: ' + this.total);
-    console.log('total: ' + this.total);
+  },
 
-    console.log(this.saleArray);
-  }
+  render: function(){
+    this.customerByHour();
+    this.cookiesByHour();
+    this.totalSales();
+    this.salesByHour();
+    this.display();
+  },
+
+  
+
+  // display: function(){
+  //   for(var i = 0; i<=timeArray.length; i++){
+  //     var newLi = document.createElement('li');
+  //     var saleItem = document.createTextNode(FirstnPike.saleArray[i]);
+  //     newLi.appendChild(saleItem);
+  //     var position =document.getElementById('first-pike');
+  //     position.appendChild(newLi);
+  //   }
+  // }
+
 
 };
 
+
+//FirstnPike;
 
 
 function numCustomers(min, max){
@@ -245,10 +281,14 @@ var alki = {
 };
 
 
-console.log(FirstnPike.customerByHour() );
-console.log(FirstnPike.cookiesByHour() );
-console.log(FirstnPike.salesByHour() );
-FirstnPike.totalSales();
+FirstnPike.render();
+
+
+// console.log(FirstnPike.customerByHour() );
+// console.log(FirstnPike.cookiesByHour() );
+// FirstnPike.totalSales();
+// console.log(FirstnPike.salesByHour() );
+
 
 console.log(SeaTac.customerByHour());
 console.log(SeaTac.cookiesByHour());
@@ -271,19 +311,19 @@ console.log(alki.salesByHour());
 alki.totalSales();
 
 
+// for(var i = 0; i<=timeArray.length; i++){
+//   var newLi = document.createElement('li');
+//   var saleItem = document.createTextNode(FirstnPike.saleArray[i]);
+//   newLi.appendChild(saleItem);
+//   var position =document.getElementById('first-pike');
+//   position.appendChild(newLi);
+// }
+
 for(var i = 0; i<=timeArray.length; i++){
   var newLi = document.createElement('li');
-  var saleItem = document.createTextNode(FirstnPike.saleArray[i]);
+  var saleItem = document.createTextNode(SeaTac.saleArray[i]);
   newLi.appendChild(saleItem);
-  var position =document.getElementById('first-pike');
-  position.appendChild(newLi);
-}
-
-for(i = 0; i<=timeArray.length; i++){
-  newLi = document.createElement('li');
-  saleItem = document.createTextNode(SeaTac.saleArray[i]);
-  newLi.appendChild(saleItem);
-  position = document.getElementById('seatac');
+  var position = document.getElementById('seatac');
   position.appendChild(newLi);
 }
 
