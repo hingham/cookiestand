@@ -79,22 +79,9 @@ for (var i = 0; i < locations.length; i++){
   console.log(locations[i].totalSales() );
 }
 
-
-// for (var k = 0; k<locations.length; k++){
-//   var salesData = locations[k].salesByHour();//returns array
-//   for (var m = 0; m < salesData.length; m++){
-//     var newLi = document.createElement('li');
-//     var displaySales = document.createTextNode(salesData[m]);
-//     newLi.appendChild(displaySales);
-//     var position = document.getElementById(locations[k].name);
-//     position.appendChild(newLi);
-//   }
-
-// }
-
-var newTable = document.createElement('thead');
+var newHead = document.createElement('thead');
 var position = document.getElementsByTagName('table')[0];
-position.appendChild(newTable);
+position.appendChild(newHead);
 
 var newRow = document.createElement('tr');
 position = document.getElementsByTagName('thead')[0];
@@ -121,12 +108,15 @@ var tableTimes = function(){
 
 };
 
+tableTimes();
+
 var tBody = document.createElement('tbody');
 position = document.getElementsByTagName('table')[0];
 position.appendChild(tBody);
 
+var newFoot = document.createElement('tfoot');
+position.appendChild(newFoot);
 
-tableTimes();
 
 Store.prototype.makeRow = function () {
 
@@ -158,9 +148,12 @@ Store.prototype.makeRow = function () {
     position.appendChild(fishTotal);
   }
 
+
 };
 
 locations[1].makeRow();
+
+//create a table footer
 
 
 
