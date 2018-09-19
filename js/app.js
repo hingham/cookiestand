@@ -4,7 +4,7 @@ var timeArray = ['6am', '7am', '8am', '9am', '10am',
   '11am', '12pm', '1pm', '2pm', '3pm',
   '4pm', '5pm', '6pm', '7pm', '8pm'];
 
-var locations = [];
+var locations = []; //does this serve for the same thing as Store.locations = []; ??
 
 function numCustomers(max, min){
   return Math.floor(Math.random()* (max-min + 1)+min);
@@ -118,42 +118,40 @@ var newFoot = document.createElement('tfoot');
 position.appendChild(newFoot);
 
 
-Store.prototype.makeRow = function () {
+Store.prototype.renderDataRow = function () {
 
-  for (var l = 0; l<locations.length; l++){
-    var newRow = document.createElement('tr');
-    position = document.getElementsByTagName('tbody')[0];
-    position.appendChild(newRow);
-
-    var newStore = document.createElement('td');
-    var storeName = document.createTextNode(locations[l].name);
-    newStore.appendChild(storeName);
-    newRow.appendChild(newStore);
-    
-    var salesData = locations[l].cookiesByHour();
-    salesData.push(this.total);
-    console.log(salesData);
-
-    for (var h = 0; h < timeArray.length; h++){
-      var hourSale = document.createElement('td');
-      var saleData = document.createTextNode(salesData[h]);
-      hourSale.appendChild(saleData);
-      position = document.getElementsByTagName('tr')[l+1];
-      position.appendChild(hourSale);
-    }
-
-    var fishTotal = document.createElement('td');
-    var fishSales = document.createTextNode(locations[l].total);
-    fishTotal.appendChild(fishSales);
-    position.appendChild(fishTotal);
+  position = document.getElementsByTagName('tbody')[0];
+  var newRow = document.createElement('tr');
+  position.appendChild(newRow);
+  //get rid of this for loop, should just be making one new row when called
+  var newStore = document.createElement('td');
+  var storeName = document.createTextNode(this.name);
+  newStore.appendChild(storeName);
+  newRow.appendChild(newStore);
+  //shouldn't have to use locations--just this.name--it knows what instance it is
+  var salesData = this.cookiesByHour();
+  salesData.push(this.total);
+  console.log(salesData);
+  //again, should use this.cookiesByHour
+  for (var h = 0; h < timeArray.length; h++){
+    var hourSale = document.createElement('td');
+    var saleData = document.createTextNode(salesData[h]);
+    hourSale.appendChild(saleData);
+    // position = document.getElementsByTagName('tr')[l]; //now this part is now making sense
+    newRow.appendChild(hourSale);//newRow is the parent, append the a child ('td')
   }
 
+  var fishTotal = document.createElement('td');
+  var fishSales = document.createTextNode(this.total);
+  fishTotal.appendChild(fishSales);
+  newRow.appendChild(fishTotal);
 
 };
 
-locations[1].makeRow();
+locations[0].renderDataRow();
+locations[1].renderDataRow();
 
-//create a table footer
+
 
 
 
