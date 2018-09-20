@@ -1,15 +1,36 @@
 body {
     background-color: rgb(243, 182, 164);
-    color:rgb(43, 62, 91));
+    color:rgb(43, 62, 91);
     font-family: 'Courier New', Courier, monospace;
 }
 
 header {
     text-align: center;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 30px;
     margin-top: 100px;
 }
+
+legend{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+form{
+    margin: 10px;
+    padding: 10px;
+    background: rgb(243, 231, 226);
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    border-radius: 5px;
+    padding:5px;
+}
+
 
 p {
     font-weight: bold;
@@ -24,7 +45,9 @@ img{
 }
 
 table, th {
+    background-color: rgb(243, 231, 226);
     border-bottom: 5px solid black;
+    margin: 10px;
     padding: 12px;
     text-align: left;
     font-size: 26px;
@@ -35,4 +58,5 @@ table, th {
      border-bottom: 1px solid black;
      padding: 12px;
      font-size: 20px;
+     background-color: rgb(255, 253, 253);
  }
