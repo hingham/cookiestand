@@ -11,15 +11,21 @@ var newStoreForm = document.getElementById('newStoreForm');
 
 
 function numCustomers(min, max){
-  return Math.floor(Math.random()* (max-min + 1) + min);
+  console.log('min and max' + min + max);
+  var random = Math.random();
+  var tootal = Math.floor((random * (max-min + 1)) + min);
+  console.log('tootal' + tootal);
+
+  return tootal;
 }
+
 
 function Store(name, min, max, avg){
   this.name = name;
   this.min= min;
   this.max = max;
   this.avg = avg;
-  this.customerArray = [];
+  this.customerArray = [];//holds the random numbers of customers for each hour
   this.cookiesArray = [];
   this.total=0;
   this.saleArray = [];
@@ -30,11 +36,9 @@ function Store(name, min, max, avg){
 Store.prototype.customerByHour = function (){
   for (var i = 0; i<timeArray.length; i++){
     this.customerArray.push(numCustomers(this.min, this.max));
-    //console.log(typeof(this.customerArray[1]) );
   }
-  return this.customerArray;
+  console.log(this.name + ' has ' + this.customerArray);
 };
-
 
 
 //Generates the number of cookies sold per hour multiplying customers by avg cookie sales
@@ -57,28 +61,11 @@ Store.prototype.salesByHour = function() {
   }
 };
 
-
-
-//this concatenates time with sales per hour to print a nice readable list
-// Store.prototype.salesByHour = function() {
-//   console.log(timeArray[1]);
-//   console.log(this.cookiesArray[1]);
-//   for(var i = 0; i<timeArray.length; i++){
-//     this.saleArray.push(timeArray[i] + ': ' + this.cookiesArray[i] + ' cookies.');
-//   }
-//   this.saleArray.push('Total: ' + this.total);
-//   return this.saleArray;
-// };
-
-
 new Store('1st-and-Pike', 23, 40, 6.3);
 new Store('Seatac', 3, 24, 1.2);
 new Store('Seattle-Center', 11, 38, 3.7);
 new Store('Capitol-Hill', 20, 38, 2.3);
 new Store('Alki', 2, 16, 4.6);
-
-
-
 
 var generateTable = function () {
 
@@ -205,12 +192,14 @@ function addNewStore(event){
   event.preventDefault();
   //gives each target a variable name
   var newLocation = event.target.locationName.value;
-  var newCustomerMin = event.target.customerMin.value;
-  var newCustomerMax = event.target.customerMax.value;
-  var newAvgSale = event.target.avgSale.value;
+  var newCustomerMin = parseInt(event.target.customerMin.value);
+  var newCustomerMax = parseInt(event.target.customerMax.value);
+  var newAvgSale = parseInt(event.target.avgSale.value);
 
   //feed input into constructor function to make new instance of object
   new Store(newLocation, newCustomerMin, newCustomerMax, newAvgSale);
+
+
 
   storeTable.innerHTML='';
   generateTable();
