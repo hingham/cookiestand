@@ -59,6 +59,8 @@ Store.prototype.salesByHour = function() {
     console.log(this.cookiesArray);
     this.total += this.cookiesArray[i];
   }
+  this.cookiesArray.push(this.total);
+  //console.log(this.cookiesArray.push('the totootal: '+ this.total));
 };
 
 new Store('1st-and-Pike', 23, 40, 6.3);
@@ -142,7 +144,7 @@ Store.prototype.renderDataRow = function () {
 
 //locations[0].renderDataRow();
 var renderTable = function() { 
-  for (var z = 0; z<timeArray.length; z++){
+  for (var z = 0; z<=timeArray.length; z++){
     hourTotal[z] = 0;
   }
   for(var t = 0; t < locations.length; t++){
@@ -152,7 +154,7 @@ var renderTable = function() {
     locations[t].renderDataRow();
 
     //change the value of hourTotal with an updated value based on cookies array for location t
-    for (var c = 0; c < timeArray.length; c++){
+    for (var c = 0; c <= timeArray.length; c++){
       hourTotal[c] = hourTotal[c] + locations[t].cookiesArray[c];
     }
     console.log('hour total' + hourTotal);
@@ -172,7 +174,7 @@ var renderTable = function() {
   newFootRow.appendChild(footLabel);
 
   // //fill the array hourTotal with the cookies
-  for (var f = 0; f<timeArray.length; f++){
+  for (var f = 0; f<=timeArray.length; f++){
     var newHourTotal = document.createElement('td');
     var theHourTotal = document.createTextNode(hourTotal[f]);
     newHourTotal.appendChild(theHourTotal);
