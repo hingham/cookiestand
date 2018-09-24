@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(255, 254, 254);
+    background-color: rgba(254, 254, 255, 0.397);
     color: rgb(95, 70, 67);
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -125,15 +125,25 @@ table, th {
     padding: 12px;
     text-align: left;
     font-size: 20px;
-
  }
 
  td{
      border-bottom: 1px solid black;
      padding: 12px;
      font-size: 20px;
-     background-color: rgb(255, 253, 253);
+     background-color: rgb(220, 230, 245);
  }
+
+ 
+ tr:hover td{
+     background: rgb(111, 132, 187);
+     color: white;
+ }
+
+
+ td:hover {
+    background: rgb(10, 21, 56);
+} 
 
 article img {
     float: left;
