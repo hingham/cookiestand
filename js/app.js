@@ -1,218 +1,160 @@
-'strict';
+'use strict';
 
 var timeArray = ['6am', '7am', '8am', '9am', '10am',
   '11am', '12pm', '1pm', '2pm', '3pm',
   '4pm', '5pm', '6pm', '7pm', '8pm'];
+var thead = document.getElementsByTagName('thead')[0];
+var tbody = document.getElementsByTagName('tbody')[0];
+var tfoot = document.getElementsByTagName('tfoot')[0];
+var newStoreForm = document.getElementById('newStoreForm')[0];
 
-var locations = []; //does this serve for the same thing as Store.locations = []; ??
-var hourTotal = [];
-var storeTable = document.getElementsByTagName('table')[0];
-var newStoreForm = document.getElementById('newStoreForm');
-
-
-function numCustomers(min, max){
-  console.log('min and max' + min + max);
-  var random = Math.random();
-  var tootal = Math.floor((random * (max-min + 1)) + min);
-  console.log('tootal' + tootal);
-
-  return tootal;
+function ranNum(min, max) {
+  var randomNumber = Math.floor(Math.random() * (max-min + 1) + min);
+  console.log('random number' + randomNumber);
+  return randomNumber;
 }
 
 
-function Store(name, min, max, avg){
-  this.name = name;
-  this.min= min;
-  this.max = max;
-  this.avg = avg;
-  this.customerArray = [];//holds the random numbers of customers for each hour
-  this.cookiesArray = [];
-  this.total=0;
-  this.saleArray = [];
-  locations.push(this);
+
+function addElement(element, content, parent) {
+  var newElement = document.createElement(element);
+  var newContent = document.createTextNode(content);
+  newElement.appendChild(newContent);
+  parent.appendChild(newElement);
+  return newElement;
 }
 
-//Generates an array of a random number of customers per hour
-Store.prototype.customerByHour = function (){
-  for (var i = 0; i<timeArray.length; i++){
-    this.customerArray.push(numCustomers(this.min, this.max));
+function Store(location, min, max, avg){
+  this.locationName = location;
+  this.minCustomersPerHour = min;
+  this.maxCustomersPerHour = max;
+  this.avgCookiesPerSale = avg;
+  this.avgCookiesPerSale = avg;
+  this.cookiesPerHour = [];
+  this.totalCookies= 0 ;
+  this.getSales();
+
+  Store.locations.push(this);
+}
+
+Store.locations = [];
+
+Store.prototype.getSales = function (){
+  for ( var i = 0; i< timeArray.length; i++){
+    var numCustomers = ranNum(
+      this.minCustomersPerHour,
+      this.maxCustomersPerHour
+    );
+    console.log(numCustomers);
+    var hourlyCount = Math.floor((numCustomers * this.avgCookiesPerSale));
+    this.cookiesPerHour.push(hourlyCount);
+    this.totalCookies += hourlyCount;
+    console.log('total' + this.totalCookies);
+    console.log('cookie array' + this.cookiesPerHour);
   }
-  console.log(this.name + ' has ' + this.customerArray);
 };
 
-
-//Generates the number of cookies sold per hour multiplying customers by avg cookie sales
-Store.prototype.cookiesByHour = function(){
-  for(var i=0; i<timeArray.length; i++){
-    var mult = Math.floor(this.customerArray[i] * this.avg);
-    console.log(mult);
-    this.cookiesArray.push(mult);
+//This method creates a row for a given location and a cell for every data entry and fills that entry with values from cookiesPerHour
+Store.prototype.render = function () {
+  var tr = addElement('tr', '', tbody);
+  addElement('td', this.locationName, tr);
+  for (var i = 0; i< this.cookiesPerHour.length; i++){
+    addElement('td', this.cookiesPerHour[i], tr);
+    // var input = addElement('input', '', td);
+    //td.value = this.cookiesPerHour[i];
   }
-  //return this.cookiesArray;
+  addElement('th', this.totalCookies, tr);
 };
 
+//Creaters header
+function renderHeader() {
+  //clears the header
+  thead.innerHTML = '';
+  //adds a row to the table header
+  var tr = addElement('tr', '', thead);
+  //adds an cell that says 'Stores' to the header
+  addElement('th', 'Stores', tr);
 
-//totals all the cookie sales at the end of the day
-Store.prototype.salesByHour = function() {
+  //loops through time array and adds the times across the top of the table
   for(var i = 0; i<timeArray.length; i++){
-    console.log(this.total);
-    console.log(this.cookiesArray);
-    this.total += this.cookiesArray[i];
+  //creates an cell for each time and adds it to the row
+    addElement('th', timeArray[i], tr);
   }
-  this.cookiesArray.push(this.total);
-  //console.log(this.cookiesArray.push('the totootal: '+ this.total));
-};
+}
 
-new Store('1st-and-Pike', 23, 40, 6.3);
+function renderFooter(){
+  //clear foot, add a row to the foot, and then add a data cell that says 'Hourly Total' to the row
+  tfoot.innerHTML = '';
+  var tr = addElement('tr', '', tfoot);
+  addElement('th', 'Hourly Total', tr);
+
+  //creates a variable to store the grand total
+  var grandTotal = 0;
+  //console.log(grandTotal);
+  //loops through the time array
+  for (var i = 0; i<timeArray.length; i++){
+    //set hourTotal to 0 so each columns is added seperately
+    var hourTotal = 0;
+    //loops through the locations
+    for (var x = 0; x<Store.locations.length; x++){
+      //loops through the locations and sums the amount sold at that hour for a fixed index in the cookiesPerHour 
+      hourTotal += Store.locations[x].cookiesPerHour[i];
+      //sums all totals from each column
+      grandTotal += Store.locations[x].cookiesPerHour[i];
+    }
+    //create a cell and append the row to include the hourTotal
+    addElement('th', hourTotal, tr);
+  }
+  //create a cell and append the row to include grandTotal
+  addElement('th', grandTotal, tr);
+}
+
+
+//this function calls the render method for every store location
+function renderStore(){
+  tbody.innerHTML = '';
+  for (var i=0; i<Store.locations.length; i++){
+    //loops through every store and calls the render function 
+    Store.locations[i].render();
+  }
+}
+
+
+//add a new store
+function handleSubmit(event) {
+  event.preventDefault();
+  var locationName = event.target.location.value;
+  var min = parseInt(event.target.customerMin.value);
+  var max = parseInt(event.target.customerMax.value);
+  var avg = parseFloat(event.target.avg.value);
+
+  var store = new Store (locationName, min, max, avg);
+
+  console.log(store);
+  console.log(Store.locations);
+  tbody.innerHTML='';
+  // store.render();
+  // renderFooter();
+}
+
+
+
+newStoreForm.addEventListener('submit', handleSubmit);
+
+
+new Store('Pike Place', 22, 65, 6.3);
 new Store('Seatac', 3, 24, 1.2);
-new Store('Seattle-Center', 11, 38, 3.7);
-new Store('Capitol-Hill', 20, 38, 2.3);
+new Store('Seattle Center', 11, 38, 3.7);
+new Store('Capitol Hill', 20, 38, 2.3);
 new Store('Alki', 2, 16, 4.6);
 
-var generateTable = function () {
-
-  //Create the table head
-  var newHead = document.createElement('thead');
-  var position = document.getElementsByTagName('table')[0];
-  position.appendChild(newHead);
-
-  //create the table tr in the head
-  var newRow = document.createElement('tr');
-  position = document.getElementsByTagName('thead')[0];
-  position.appendChild(newRow);
-
-  //use a function to go through and populate the first row with times
-  var tableTimes = function(){
-    var firstColumn = document.createElement('th');
-    var columnName = document.createTextNode('Store Names');
-    firstColumn.appendChild(columnName);
-    position = document.getElementsByTagName('tr')[0];
-    position.appendChild(firstColumn);
-
-    for (var x = 0; x<timeArray.length; x++){
-      var newTime = document.createElement('th');
-      var hour = document.createTextNode(timeArray[x]);
-      newTime.appendChild(hour);
-      position = document.getElementsByTagName('tr')[0];
-      position.appendChild(newTime);
-    }
-
-    var lastColumn = document.createElement('th');
-    var columnTotal = document.createTextNode('Total');
-    lastColumn.appendChild(columnTotal);
-    position = document.getElementsByTagName('tr')[0];
-    position.appendChild(lastColumn);
-  };
-
-  //create the body for the table
-  var tBody = document.createElement('tbody');
-  position = document.getElementsByTagName('table')[0];
-  position.appendChild(tBody);
-
-  tableTimes();
-};
+renderHeader();
+renderStore();
+renderFooter();
 
 
-Store.prototype.renderDataRow = function () {
+console.log('locations' + Store.locations);
 
-  var position = document.getElementsByTagName('tbody')[0];
-  var newRow = document.createElement('tr');
-  position.appendChild(newRow);
-  //get rid of this for loop, should just be making one new row when called
-  var newStore = document.createElement('td');
-  var storeName = document.createTextNode(this.name);
-  newStore.appendChild(storeName);
-  newRow.appendChild(newStore);
-
-  for (var h = 0; h < timeArray.length; h++){
-    var hourSale = document.createElement('td');
-    var saleData = document.createTextNode(this.cookiesArray[h]);
-    hourSale.appendChild(saleData);
-    // position = document.getElementsByTagName('tr')[l]; //now this part is now making sense
-    newRow.appendChild(hourSale);//newRow is the parent, append the a child ('td')
-  }
-
-  var fishTotal = document.createElement('td');
-  var fishSales = document.createTextNode(this.total);
-  fishTotal.appendChild(fishSales);
-  newRow.appendChild(fishTotal);
-
-};
-
-
-
-
-//locations[0].renderDataRow();
-var renderTable = function() { 
-  for (var z = 0; z<=timeArray.length; z++){
-    hourTotal[z] = 0;
-  }
-  for(var t = 0; t < locations.length; t++){
-    locations[t].customerByHour();
-    locations[t].cookiesByHour();//returns an array cookieArray
-    locations[t].salesByHour();
-    locations[t].renderDataRow();
-
-    //change the value of hourTotal with an updated value based on cookies array for location t
-    for (var c = 0; c <= timeArray.length; c++){
-      hourTotal[c] = hourTotal[c] + locations[t].cookiesArray[c];
-    }
-    console.log('hour total' + hourTotal);
-  }
-
-  var newFoot = document.createElement('tfoot');
-  var position = document.getElementsByTagName('table')[0];
-  position.appendChild(newFoot);
-
-  var newFootRow = document.createElement('tr');
-  newFoot.appendChild(newFootRow);
-
-
-  var footLabel = document.createElement('td');
-  var footTotalLabel = document.createTextNode('Hourly Totals');
-  footLabel.appendChild(footTotalLabel);
-  newFootRow.appendChild(footLabel);
-
-  // //fill the array hourTotal with the cookies
-  for (var f = 0; f<=timeArray.length; f++){
-    var newHourTotal = document.createElement('td');
-    var theHourTotal = document.createTextNode(hourTotal[f]);
-    newHourTotal.appendChild(theHourTotal);
-    newFootRow.appendChild(newHourTotal);
-  }
-
-  //console.log('this should have 15 values: ' + hourTotal);
-};
-
-
-generateTable();
-renderTable();
-
-
-
-function addNewStore(event){
-  event.preventDefault();
-  //gives each target a variable name
-  var newLocation = event.target.locationName.value;
-  var newCustomerMin = parseInt(event.target.customerMin.value);
-  var newCustomerMax = parseInt(event.target.customerMax.value);
-  var newAvgSale = parseInt(event.target.avgSale.value);
-
-  //feed input into constructor function to make new instance of object
-  new Store(newLocation, newCustomerMin, newCustomerMax, newAvgSale);
-
-
-
-  storeTable.innerHTML='';
-  generateTable();
-  renderTable();
-
-  //I am getting data of 0 cookies per hour and I don't know why
-  //I checked my random number functions and functions that called the random number functions
-  //This only happens for the store data I get from the user
-}
-
-newStoreForm.addEventListener('submit', addNewStore);
 
 
 
