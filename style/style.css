@@ -33,6 +33,10 @@ section #locations {
     margin: 10px;
 }
 
+nav{
+    margin-left: 100px;
+}
+
 nav ul li{
     background: rgb(187, 115, 107);
     display: inline-block;
@@ -93,6 +97,10 @@ label {
     font-weight: bold;
 }
 
+table input{
+    width: 15px;
+}
+
 input {
     border-radius: 5px;
     padding:5px;
@@ -116,7 +124,7 @@ table, th {
     margin: 10px;
     padding: 12px;
     text-align: left;
-    font-size: 26px;
+    font-size: 20px;
 
  }
 
