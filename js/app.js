@@ -6,7 +6,7 @@ var timeArray = ['6am', '7am', '8am', '9am', '10am',
 var thead = document.getElementsByTagName('thead')[0];
 var tbody = document.getElementsByTagName('tbody')[0];
 var tfoot = document.getElementsByTagName('tfoot')[0];
-var newStoreForm = document.getElementById('newStoreForm')[0];
+var newStoreForm = document.getElementById('newStoreForm');
 
 function ranNum(min, max) {
   var randomNumber = Math.floor(Math.random() * (max-min + 1) + min);
@@ -132,14 +132,15 @@ function handleSubmit(event) {
 
   console.log(store);
   console.log(Store.locations);
-  tbody.innerHTML='';
-  // store.render();
-  // renderFooter();
+
+  store.render();
+  renderFooter();
 }
 
 
 
 newStoreForm.addEventListener('submit', handleSubmit);
+//console.log('function is working');
 
 
 new Store('Pike Place', 22, 65, 6.3);
