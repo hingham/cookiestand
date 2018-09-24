@@ -132,7 +132,6 @@ function handleSubmit(event) {
 
   console.log(store);
   console.log(Store.locations);
-
   store.render();
   renderFooter();
 }
